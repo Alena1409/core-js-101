@@ -166,8 +166,8 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2 < circle.radius ** 2;
 }
 
 
@@ -380,8 +380,25 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  if (!m1 || !m2) return [];
+  const rowM1 = m1.length;
+  const colM1 = m1[0].length;
+  const rowM2 = m2.length;
+  const colM2 = m2[0].length;
+
+  if (colM1 !== rowM2) return [];
+  if (rowM1 !== colM2) return [];
+
+  const m3 = Array.from({ length: rowM1 }, () => Array(colM2).fill(0));
+  for (let i = 0; i < rowM1; i += 1) {
+    for (let j = 0; j < colM2; j += 1) {
+      for (let n = 0; n < colM1; n += 1) {
+        m3[i][j] += m1[i][n] * m2[n][j];
+      }
+    }
+  }
+  return m3;
 }
 
 
@@ -415,8 +432,25 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[i][0] && position[i][0] === position[i][1] && position[i][0] === position[i][2]) {
+      return position[i][0];
+    }
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    if (position[0][i] && position[0][i] === position[1][i] && position[0][i] === position[2][i]) {
+      return position[0][i];
+    }
+  }
+  if (position[1][1] && position[1][1] === position[0][0] && position[1][1] === position[2][2]) {
+    return position[1][1];
+  }
+
+  if (position[1][1] && position[1][1] === position[0][2] && position[1][1] === position[2][0]) {
+    return position[1][1];
+  }
+  return undefined;
 }
 
 
