@@ -209,8 +209,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+  return `${start}${min}, ${max}${end}`;
 }
 
 
@@ -315,8 +319,23 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const obj = {
+    '(': ')',
+    '{': '}',
+    '[': ']',
+    '<': '>',
+  };
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (obj[str[i]]) {
+      stack.push(str[i]);
+    } else if (Object.values(obj).includes(str[i])) {
+      if (stack.length === 0 || obj[stack.pop()] !== str[i]) return false;
+    }
+  }
+  return stack.length === 0;
 }
 
 
